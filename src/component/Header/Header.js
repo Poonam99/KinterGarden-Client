@@ -1,12 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+// import logo from '../../../../public/logo512.png';
 import { Link } from 'react-router-dom';
-import { FaUserAlt } from "react-icons/fa";
+
+
+
+import { FaMoon, FaSun, FaUserAlt } from "react-icons/fa";
 import { Button, Image } from 'react-bootstrap';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
-import Leftsidenav from '../../Pages/Share/Leftsidenav/Leftsidenav.js'
+import Leftsidenav from '../../Pages/Share/Leftsidenav/Leftsidenav';
 
 const Header = () => {
     const { user, logOut } = useContext(AuthContext)
@@ -15,22 +19,36 @@ const Header = () => {
             .then(() => { })
             .catch(error => console.error(error))
     }
+    const [value, setValue] = useState(true)
+    const handleValue = (event) => {
+        if (value === true) {
+            event.target.value = false
+            setValue(event.target.value);
+
+        }
+        else {
+            event.target.value = true
+            setValue(event.target.value);
+        }
+    }
     return (
         <div>
             <Navbar collapseOnSelect className='mb-4' expand="lg" bg="light" variant="light">
-                <Container>
+                <Container className='d-flex'>
+                    {/* <Navbar.Image src={logo}></Navbar.Image> */}
                     <Navbar.Brand><Link to={'/'}>Dragon News</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link>All News</Nav.Link>
+                            <Nav.Link href='/course'>Courses</Nav.Link>
+                            <Nav.Link href='/faq'>FAQ</Nav.Link>
+                            <Nav.Link href='/blog'>Blog</Nav.Link>
                         </Nav>
                         <Nav>
                             {
                                 user?.uid ?
                                     <>
                                         <Button variant="link" onClick={handleSignOut}>Sign Out</Button>
-                                        <span className='ms-3'>{user?.displayName}</span>
                                     </>
                                     :
                                     < >
@@ -38,15 +56,26 @@ const Header = () => {
                                         <Link className='me-3' to={'/register'}>Sign Up</Link>
                                     </>
                             }
-                            <Link to='/profile' >
+                            <div data-toggle="tooltip" data-placement="bottom" title={user?.displayName}>
                                 {user?.photoURL ?
                                     <Image
                                         style={{ height: '30px' }}
                                         roundedCircle
                                         src={user?.photoURL}
-                                    ></Image> : <FaUserAlt />
+                                    ></Image>
+                                    : <FaUserAlt />
                                 }
-                            </Link>
+                            </div>
+                            <Button variant='transparent' className='ms-2' onClick={handleValue}>{
+                                value ?
+                                    <div data-toggle="tooltip" data-placement="bottom" title='Night' >
+                                        <FaMoon />
+                                    </div>
+                                    :
+                                    <div data-toggle="tooltip" data-placement="bottom" title='Day'>
+                                        <FaSun />
+                                    </div>
+                            }</Button>
                         </Nav>
                         <div className='d-lg-none'>
                             <Leftsidenav></Leftsidenav>
