@@ -1,11 +1,31 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
+import Carousel from 'react-bootstrap/Carousel';
+import Button from 'react-bootstrap/Button';
+
 
 const Home = () => {
-    const course = useLoaderData();
+    const courses = useLoaderData();
+    console.log(courses)
     return (
         <div>
-            <h1>hom: {course.length}</h1>
+            <Carousel variant="dark">
+                {
+                    courses.map(course =>
+                        <Carousel.Item>
+                            <img
+                                className="d-block w-100"
+                                src={course.image}
+                                alt="First slide"
+                            />
+                            <Carousel.Caption>
+                                <h5>{course.name}</h5>
+                                <Link to={`/course/${course.id}`}><Button variant="primary">Details</Button></Link>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                    )
+                }
+            </Carousel>
         </div>
     );
 };
