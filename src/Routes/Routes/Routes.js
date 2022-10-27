@@ -1,8 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import Main from "../../Layout/Main";
-import Home from "../../Pages/Home/Home";
-import SignIn from "../../component/Login/Login/Login";
-import SignUp from "../../component/Login/Signup/Signup";
+
 
 export const routes = createBrowserRouter([
     {
@@ -12,11 +9,7 @@ export const routes = createBrowserRouter([
             {
                 path: '/',
                 element: <Home></Home>,
-                loader: () => fetch('http://localhost:5000/course')
-            },
-            {
-                path: '/home',
-                element: <Home></Home>
+                loader: () => fetch(`http://localhost:5000/course`)
             },
             {
                 path: '/login',
@@ -26,6 +19,36 @@ export const routes = createBrowserRouter([
                 path: '/register',
                 element: <SignUp></SignUp>
             },
+            {
+                path: '/',
+                element: <CourseMain></CourseMain>,
+                children: [
+                    {
+                        path: '/course',
+                        element: <Courses></Courses>,
+                        loader: () => fetch(`http://localhost:5000/course`)
+                    },
+                    {
+                        path: '/course/:id',
+                        element: <PrivateRoute><Course></Course></PrivateRoute>,
+                        loader: ({ params }) => fetch(`http://localhost:5000/course/${params.id}`)
+                    }
+                ]
+            },
+            {
+                path: '/course/:id/checkout',
+                element: <PrivateRoute><Checkout></Checkout></PrivateRoute>,
+                loader: ({ params }) => fetch(`http://localhost:5000/course/${params.id}`)
+
+            },
+            {
+                path: '/blog',
+                element: <Blog></Blog>
+            },
+            {
+                path: '/faq',
+                element: <FAQ></FAQ>
+            }
         ]
     }
-]);
+])
