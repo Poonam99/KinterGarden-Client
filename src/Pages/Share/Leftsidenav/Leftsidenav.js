@@ -18,7 +18,7 @@ const Leftsidenav = () => {
                 {
                     courses.map(course =>
                         <li className={'flex items-start p-5 hover:bg-gray-300 '} key={course.id}>
-                            <NavLink className={({ isActive }) => isActive ? active : normal} to={`/course/${course.id}`}>{course.name}</NavLink>
+                            <NavLink className={({ isActive }) => isActive ? active : normal} to={`/course/${course.id}`}>{course.course}</NavLink>
                         </li>
                     )
                 }

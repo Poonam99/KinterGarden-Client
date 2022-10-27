@@ -5,14 +5,14 @@ import Card from 'react-bootstrap/Card';
 const Courses = () => {
     const courses = useLoaderData();
     return (
-        <div className='row row-cols-3 g-5'>
+        <div className='row row-cols-1 row-cols-md-3 g-5'>
             {
                 courses.map(course =>
-                    <div className='col'>
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={course.image} />
+                    <div key={course.id} className='col'>
+                        <Card >
+                            <Card.Img variant="top" className='w-100' src={course.image} />
                             <Card.Body>
-                                <Card.Title>{course.name}</Card.Title>
+                                <Card.Title>{course.course}</Card.Title>
                                 <Link to={`/course/${course.id}`}><Button variant="primary">Details</Button></Link>
                             </Card.Body>
                         </Card>

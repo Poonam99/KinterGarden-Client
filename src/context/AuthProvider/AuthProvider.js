@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth'
 import app from '../../firebase/firebase.config'
 
 export const AuthContext = createContext();
@@ -11,15 +11,10 @@ const AuthProvider = ({ children }) => {
 
     const [loading, setLoading] = useState(true);
 
-    const googleProviderLogin = (provider) => {
+    const providerLogin = (provider) => {
         setLoading(true)
         return signInWithPopup(auth, provider);
     }
-    const githubProviderLogin = (provider) => {
-        setLoading(true)
-        return signInWithPopup(auth, provider);
-    }
-
     const logOut = () => {
         setLoading(true)
         return signOut(auth);
@@ -27,10 +22,6 @@ const AuthProvider = ({ children }) => {
 
     const updateUserProfile = (profile) => {
         return updateProfile(auth.currentUser, profile);
-    }
-
-    const verifyEmail = () => {
-        return sendEmailVerification(auth.currentUser);
     }
 
     const createUser = (email, pass) => {
@@ -45,7 +36,7 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser === null || currentUser.emailVerified) {
+            if (currentUser === null || currentUser) {
                 setUser(currentUser);
             }
             setLoading(false)
@@ -54,7 +45,7 @@ const AuthProvider = ({ children }) => {
             unsubscribe();
         }
     }, [])
-    const authInfo = { user, googleProviderLogin, githubProviderLogin, logOut, createUser, loginUser, loading, updateUserProfile, verifyEmail, setLoading }
+    const authInfo = { user, providerLogin, logOut, createUser, loginUser, loading, updateUserProfile, setLoading }
     return (
         <AuthContext.Provider value={authInfo}>
             {children}

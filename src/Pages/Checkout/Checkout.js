@@ -13,7 +13,7 @@ const Checkout = () => {
     return (
         <div className='text-center'>
             <h1>Checkout</h1>
-            <h2>{course.name}</h2>
+            <h2>{course.course}</h2>
             <h2>{user.displayName}</h2>
             <h2>{user.email}</h2>
             <Button onClick={check} variant='primary'>Confirm</Button>

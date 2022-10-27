@@ -1,17 +1,35 @@
+import { GithubAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link, useNavigate } from 'react-router-dom';
+import { FaGithub } from 'react-icons/fa';
+import { FcGoogle } from 'react-icons/fc';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthProvider/AuthProvider';
-import { toast } from 'react-hot-toast'
 
-const SignUp = () => {
+const Signup = () => {
     const navigate = useNavigate();
-    const { createUser, updateUserProfile, verifyEmail } = useContext(AuthContext);
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
+    const { createUser, updateUserProfile, providerLogin } = useContext(AuthContext);
     const [error, setError] = useState('');
-    const [accepted, setAccepted] = useState(false)
-    const handleAccepted = (event) => {
-        setAccepted(event.target.checked)
+    const handleGoogleSignIn = () => {
+        providerLogin(googleProvider)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                navigate('/');
+            })
+            .catch(error => console.error(error))
+    }
+    const handleGithubSignIn = () => {
+        providerLogin(githubProvider)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+                navigate('/');
+            })
+            .catch(error => console.error(error))
     }
 
     const handleUpdateUserProfile = (name, photoUrl) => {
@@ -24,11 +42,6 @@ const SignUp = () => {
             .catch(error => console.error(error))
     }
 
-    const handleEmailVerification = () => {
-        verifyEmail()
-            .then(() => { })
-            .catch(e => console.error(e))
-    }
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -43,8 +56,6 @@ const SignUp = () => {
                 navigate('/');
                 setError('');
                 handleUpdateUserProfile(name, photoUrl);
-                handleEmailVerification();
-                toast.success('Account Created Successfully. Please Verify your Email.')
             })
             .catch(error => {
                 console.error(error);
@@ -52,37 +63,43 @@ const SignUp = () => {
             })
     }
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formname">
-                <Form.Label>Name</Form.Label>
-                <Form.Control name='name' type="text" placeholder="Enter name" required />
-            </Form.Group>
+        <div className='container'>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formname">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control name='name' type="text" placeholder="Enter name" required />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formphoto">
-                <Form.Label>PhotoUrl</Form.Label>
-                <Form.Control name='photoUrl' type="text" placeholder="Enter PhotoUrl" />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="formphoto">
+                    <Form.Label>PhotoUrl</Form.Label>
+                    <Form.Control name='photoUrl' type="text" placeholder="Enter PhotoUrl" />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control name='email' type="email" placeholder="Enter email" required />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control name='email' type="email" placeholder="Enter email" required />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control name='pass' type="password" placeholder="Password" required />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control name='pass' type="password" placeholder="Password" required />
+                </Form.Group>
 
-            <Button className='mb-4' variant="primary" type="submit" disabled={!accepted}>
-                Sign Up
-            </Button>
-            <Form.Text className='text-danger fw-bold'>
-                {
-                    error
-                }
-            </Form.Text>
-        </Form>
+                <Button className='mb-4' variant="primary" type="submit">
+                    Sign Up
+                </Button>
+                <Form.Text className='text-danger fw-bold'>
+                    {
+                        error
+                    }
+                </Form.Text>
+            </Form>
+            <div className='d-flex justify-content-around m-2'>
+                <button onClick={handleGoogleSignIn}><FcGoogle className='h-8 w-8 m-2' /></button>
+                <button onClick={handleGithubSignIn}><FaGithub className='h-8 w-8 m-2' /></button>
+            </div>
+        </div>
     );
 };
 
-export default SignUp;
+export default Signup;

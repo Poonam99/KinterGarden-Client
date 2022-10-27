@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-// import logo from '../../../../public/logo512.png';
+import logo from '../../image/kintergarden.png';
 import { Link } from 'react-router-dom';
 
 
@@ -35,8 +35,8 @@ const Header = () => {
         <div>
             <Navbar collapseOnSelect className='mb-4' expand="lg" bg="light" variant="light">
                 <Container className='d-flex'>
-                    {/* <Navbar.Image src={logo}></Navbar.Image> */}
-                    <Navbar.Brand><Link to={'/'}>Dragon News</Link></Navbar.Brand>
+                    <img src={logo} alt="" />
+                    <Navbar.Brand><Link to={'/'}>Kintergarden</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">

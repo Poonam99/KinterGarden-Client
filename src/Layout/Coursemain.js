@@ -4,11 +4,11 @@ import Leftsidenav from '../Pages/Share/Leftsidenav/Leftsidenav';
 
 const CourseMain = () => {
     return (
-        <div className='row row-cols-2'>
-            <div className='col-3 d-flex justify-content-center'>
+        <div className='row row-cols-1 row-cols-md-2'>
+            <div className='col-md-3  d-flex justify-content-center'>
                 <Leftsidenav></Leftsidenav>
             </div>
-            <div className='col-9'>
+            <div className='col-md-9'>
                 <Outlet ></Outlet>
             </div>
         </div>

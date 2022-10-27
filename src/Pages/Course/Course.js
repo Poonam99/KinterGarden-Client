@@ -10,7 +10,7 @@ const Course = () => {
         <div className=''>
             <div className=''>
                 <Card >
-                    <Card.Img variant="top" src={course.image} />
+                    <Card.Img variant="top" className='w-sm-50' src={course.image} />
                     <Card.Body>
                         <Card.Title>{course.name}</Card.Title>
                         <Card.Text>
